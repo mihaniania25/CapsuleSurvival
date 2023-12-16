@@ -6,7 +6,7 @@ namespace CapsuleSurvival.Core
     {
         public abstract event Action<IVulnerable> OnBeingHitted;
 
-        public abstract void TakeHit();
+        public abstract void TakeHit(GameParticipant fromParticipant);
         public abstract void ConnectInputReader(IUserInputReader inputReader);
     }
 }

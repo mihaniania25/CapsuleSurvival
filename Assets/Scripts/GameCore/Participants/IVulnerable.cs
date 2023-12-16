@@ -5,6 +5,6 @@ namespace CapsuleSurvival.Core
     public interface IVulnerable
     {
         event Action<IVulnerable> OnBeingHitted;
-        void TakeHit();
+        void TakeHit(GameParticipant fromParticipant);
     }
 }

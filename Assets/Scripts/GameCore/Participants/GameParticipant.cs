@@ -9,12 +9,12 @@ namespace CapsuleSurvival.Core
         public abstract event Action OnDisappeared;
 
         public abstract float Radius { get; }
-        public abstract Vector3 Position { get; }
-
-        public abstract void Appear();
-        public abstract void Dissapear();
+        public virtual Vector3 Position => transform.position;
 
         public abstract void Launch();
         public abstract void Stop();
+
+        public abstract void Appear();
+        public abstract void Dissapear();
     }
 }
