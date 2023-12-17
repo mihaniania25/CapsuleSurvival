@@ -1,4 +1,6 @@
-﻿namespace CapsuleSurvival.Core
+﻿using CapsuleSurvival.Utility;
+
+namespace CapsuleSurvival.Core
 {
     public interface IGameContext
     {
@@ -7,7 +9,7 @@
         ParticipantsRegister ParticipantsRegister { get; }
         GameSessionModel SessionModel { get; }
 
-        PlayerBase Player { get; }
+        PropagationField<PlayerBase> Player { get; }
         void RegisterPlayer(PlayerBase player);
         void UnregisterPlayer();
 
@@ -18,5 +20,9 @@
         IGameEffectsController EffectsController { get; }
         void RegisterEffectsController(IGameEffectsController controller);
         void UnregisterEffectsController();
+
+        IUserInputReader UserInputReader { get; }
+        void RegisterUserInputReader(IUserInputReader userInputReader);
+        void UnregisterUserInputReader();
     }
 }

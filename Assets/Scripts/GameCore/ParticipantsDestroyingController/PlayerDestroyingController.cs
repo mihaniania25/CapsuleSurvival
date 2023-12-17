@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CapsuleSurvival.Utility;
+using System;
 using UnityEngine;
 
 namespace CapsuleSurvival.Core
@@ -9,7 +10,8 @@ namespace CapsuleSurvival.Core
         public event Action OnPlayerDestroyed;
 
         private IGameContext _gameContext;
-        private PlayerBase _player => _gameContext.Player;
+        private PropagationField<PlayerBase> _playerHolder => _gameContext.Player;
+        private PlayerBase _player => _playerHolder.Value;
 
         public void Setup(IGameContext gameContext)
         {
@@ -18,7 +20,16 @@ namespace CapsuleSurvival.Core
 
         public void Launch()
         {
-            _player.OnBeingHitted += OnPlayerHitted;
+            _playerHolder.Subscribe(OnPlayerRegister);
+        }
+
+        private void OnPlayerRegister(PlayerBase player)
+        {
+            if (player != null)
+            {
+                _playerHolder.Unsubscribe(OnPlayerRegister);
+                player.OnBeingHitted += OnPlayerHitted;
+            }
         }
 
         private void OnPlayerHitted(IVulnerable playerVulnerable)
@@ -44,6 +55,8 @@ namespace CapsuleSurvival.Core
 
         public void Stop()
         {
+            _playerHolder.Unsubscribe(OnPlayerRegister);
+
             if (_player != null)
                 _player.OnBeingHitted -= OnPlayerHitted;
         }

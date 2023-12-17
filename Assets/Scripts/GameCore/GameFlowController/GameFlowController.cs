@@ -14,13 +14,13 @@ namespace CapsuleSurvival.Core
         private GameSettings _gameSettings;
 
         private IGameContext _gameContext;
+        private PlayerBase _player => _gameContext.Player.Value;
         private IGameEffectsController _effectsController => _gameContext.EffectsController;
+        private IUserInputReader _inputsReader => _gameContext.UserInputReader;
 
         public void Setup(GameManagerParams gameManagerParams)
         {
-            _gameContext = gameManagerParams.GameContext;
-            _configsProvider = gameManagerParams.ConfigsProvider;
-            _gameSettings = gameManagerParams.GameSettings;
+            ReadManagerParams(gameManagerParams);
 
             _spawner.Setup(_gameContext, _configsProvider);
             _participantsBehaviorController.Setup(_gameContext);
@@ -30,12 +30,22 @@ namespace CapsuleSurvival.Core
             _participantsBehaviorController.OnParticipantsCleaned += OnArenaCleanedAfterGame;
         }
 
+        private void ReadManagerParams(GameManagerParams gameManagerParams)
+        {
+            _gameContext = gameManagerParams.GameContext;
+            _configsProvider = gameManagerParams.ConfigsProvider;
+            _gameSettings = gameManagerParams.GameSettings;
+        }
+
         public void Launch()
         {
             _participantsBehaviorController.Launch();
 
             _spawner.OnPlayerAppearingCompleted += OnPlayerAppearingCompleted;
             _spawner.SpawnPlayer();
+
+            _inputsReader.Launch();
+            _player.ConnectInputReader(_inputsReader);
         }
 
         private void OnPlayerAppearingCompleted()
@@ -48,6 +58,7 @@ namespace CapsuleSurvival.Core
 
         private void OnPlayerDying()
         {
+            _inputsReader.Stop();
             _participantsBehaviorController.Stop();
             _spawner.StopSpawning();
             _effectsController.EnableGameOverEffect();
@@ -70,6 +81,7 @@ namespace CapsuleSurvival.Core
 
             _participantsBehaviorController.Dispose();
             _spawner.Dispose();
+            _inputsReader.Stop();
         }
     }
 }

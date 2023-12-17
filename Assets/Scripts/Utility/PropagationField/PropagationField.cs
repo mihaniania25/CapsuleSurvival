@@ -11,6 +11,11 @@ namespace CapsuleSurvival.Utility
 
         private List<Action<T>> _handlers = new List<Action<T>>();
 
+        public PropagationField()
+        {
+            
+        }
+
         public PropagationField(T initValue)
         {
             _value = initValue;

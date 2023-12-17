@@ -5,15 +5,20 @@ namespace CapsuleSurvival.Impl
 {
     public class GameContext : IGameContext
     {
+        public GameManager GameManager { get; private set; }
+
         public IArena Arena { get; private set; }
-        public PlayerBase Player { get; private set; }
+        public PropagationField<PlayerBase> Player { get; private set; }
         public ParticipantsRegister ParticipantsRegister { get; private set; }
         public GameSessionModel SessionModel { get; private set; }
         public IGameEffectsController EffectsController { get; private set; }
+        public IUserInputReader UserInputReader { get; private set; }
 
         public GameContext()
         {
             SessionModel = new GameSessionModel();
+            GameManager = new GameManager();
+            Player = new PropagationField<PlayerBase>();
         }
 
         public void Reset()
@@ -35,7 +40,7 @@ namespace CapsuleSurvival.Impl
         public void RegisterPlayer(PlayerBase player)
         {
             if (Player == null)
-                Player = player;
+                Player.Value = player;
             else
                 GameLog.Error("[GameContext] trying to register PLAYER multiple times!");
         }
@@ -48,6 +53,14 @@ namespace CapsuleSurvival.Impl
                 GameLog.Error("[GameContext] trying to register EFFECTS CONTROLLER multiple times!");
         }
 
+        public void RegisterUserInputReader(IUserInputReader userInputReader)
+        {
+            if (UserInputReader == null)
+                UserInputReader = userInputReader;
+            else
+                GameLog.Error("[GameContext] trying to register INPUT READER multiple times!");
+        }
+
         public void UnregisterArena()
         {
             Arena = null;
@@ -55,12 +68,17 @@ namespace CapsuleSurvival.Impl
 
         public void UnregisterPlayer()
         {
-            Player = null;
+            Player.Value = null;
         }
 
         public void UnregisterEffectsController()
         {
             EffectsController = null;
+        }
+
+        public void UnregisterUserInputReader()
+        {
+            UserInputReader = null;
         }
     }
 }

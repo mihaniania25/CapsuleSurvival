@@ -13,7 +13,7 @@ namespace CapsuleSurvival.Core
 
         private IGameContext _gameContext;
         private IArena _arena => _gameContext.Arena;
-        private PlayerBase _player => _gameContext.Player;
+        private PlayerBase _player => _gameContext.Player.Value;
 
         private IConfigsProvider _configsProvider;
         private IPlayerConfig _playerConfig => _configsProvider.PlayerConfig;

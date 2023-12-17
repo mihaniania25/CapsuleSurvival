@@ -15,11 +15,13 @@ namespace CapsuleSurvival.Impl
         public override void Appear()
         {
             GameLog.Error("[SphereBomb] 'Appear' not implemented");
+            OnAppeared?.Invoke();
         }
 
         public override void Dissapear()
         {
             GameLog.Error("[SphereBomb] 'Dissapear' not implemented");
+            OnDisappeared?.Invoke();
         }
 
         public override void Launch()
