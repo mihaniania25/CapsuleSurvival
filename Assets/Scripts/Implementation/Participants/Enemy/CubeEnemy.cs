@@ -11,6 +11,8 @@ namespace CapsuleSurvival.Impl
         public override event Action OnDisappeared;
 
         [SerializeField] private BoxCollider _collider;
+        [SerializeField] private EnemyMovementController _movementController;
+        [SerializeField] private EnemyRotationController _rotationController;
 
         public override float Radius { get; protected set; }
 
@@ -36,12 +38,14 @@ namespace CapsuleSurvival.Impl
 
         public override void Launch()
         {
-            GameLog.Error("[CubeEnemy] 'Launch' not implemented");
+            _movementController.Launch();
+            _rotationController.Launch();
         }
 
         public override void Stop()
         {
-            GameLog.Error("[CubeEnemy] 'Stop' not implemented");
+            _movementController.Stop();
+            _rotationController.Stop();
         }
     }
 }

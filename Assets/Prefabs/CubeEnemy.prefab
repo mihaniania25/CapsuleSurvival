@@ -115,6 +115,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2858648938947000895}
   - component: {fileID: 6257829232127587361}
+  - component: {fileID: 1144022920938171573}
+  - component: {fileID: 3795303658526349568}
   - component: {fileID: 497162357542137382}
   m_Layer: 0
   m_Name: CubeEnemy
@@ -152,6 +154,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collider: {fileID: 3235215534710618446}
+  _movementController: {fileID: 1144022920938171573}
+  _rotationController: {fileID: 3795303658526349568}
+--- !u!114 &1144022920938171573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2721171691221716336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e2e5fc23b1251d499a0f90a2f41c276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 497162357542137382}
+--- !u!114 &3795303658526349568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2721171691221716336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f965f8977e6fae418042e07ab3b28af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotationSpeed: 60
 --- !u!54 &497162357542137382
 Rigidbody:
   m_ObjectHideFlags: 0

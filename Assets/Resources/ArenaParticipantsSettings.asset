@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ArenaParticipantsSettings
   m_EditorClassIdentifier: 
   _playerBaseSpeed: 1.5
-  _enemyBaseSpeed: 1.25
+  _enemyBaseSpeed: 1

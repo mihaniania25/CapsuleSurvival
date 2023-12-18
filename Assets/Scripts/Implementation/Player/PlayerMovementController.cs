@@ -5,6 +5,8 @@ namespace CapsuleSurvival.Impl
 {
     public class PlayerMovementController : MonoBehaviour
     {
+        [SerializeField] private Rigidbody _rigidbody;
+
         private IUserInputReader _userInputReader;
 
         public bool IsMovementEnabled { get; set; }
@@ -20,6 +22,8 @@ namespace CapsuleSurvival.Impl
 
         public void Update()
         {
+            _rigidbody.velocity = Vector3.zero;
+
             if (IsMovementEnabled)
             {
                 _userInputReader.PerformReadingInputs();
