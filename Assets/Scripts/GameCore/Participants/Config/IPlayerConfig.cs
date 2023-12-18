@@ -3,6 +3,5 @@
     public interface IPlayerConfig
     {
         PlayerBase Prefab { get; }
-        float BaseSpeed { get; }
     }
 }

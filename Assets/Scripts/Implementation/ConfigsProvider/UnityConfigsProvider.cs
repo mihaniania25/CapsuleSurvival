@@ -10,5 +10,15 @@ namespace CapsuleSurvival.Impl
 
         private GeneratorConfig _generatorConfig;
         public IGeneratorConfig GeneratorConfig => _generatorConfig ??= Resources.Load<GeneratorConfig>(ResourcesPath.GENERATOR_CONFIG);
+
+        private ArenaParticipantsSettings _arenaParticipantsSettings;
+        public ArenaParticipantsSettings ArenaParticipantsSettings
+        {
+            get
+            {
+                return _arenaParticipantsSettings ??= 
+                    Resources.Load<ArenaParticipantsSettings>(ResourcesPath.PARTICIPANTS_SETTINGS_CONFIG);
+            }
+        }
     }
 }

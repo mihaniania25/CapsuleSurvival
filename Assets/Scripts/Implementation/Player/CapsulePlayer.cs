@@ -12,6 +12,7 @@ namespace CapsuleSurvival.Impl
         public override event Action<IVulnerable> OnBeingHitted;
 
         [SerializeField] private CapsuleCollider _collider;
+        [SerializeField] private PlayerMovementController _movementController;
 
         public override float Radius { get; protected set; }
 
@@ -26,16 +27,17 @@ namespace CapsuleSurvival.Impl
         public override void ConnectInputReader(IUserInputReader inputReader)
         {
             _inputReader = inputReader;
+            _movementController.Setup(_inputReader);
         }
 
         public override void Launch()
         {
-            GameLog.Error("[CapsulePlayer] 'Launch' not implemented");
+            _movementController.IsMovementEnabled = true;
         }
 
         public override void Stop()
         {
-            GameLog.Error("[CapsulePlayer] 'Stop' not implemented");
+            _movementController.IsMovementEnabled = false;
         }
 
         public override void TakeHit(GameParticipant fromParticipant)
