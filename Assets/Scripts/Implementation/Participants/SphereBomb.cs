@@ -8,6 +8,7 @@ namespace CapsuleSurvival.Impl
     {
         private const string APPEAR_ANIMPARAM = "Appear";
         private const string DISAPPEAR_ANIMPARAM = "Disappear";
+        private const string EXPLODE_ANIMPARAM = "Explode";
 
         public override event Action OnAppeared;
         public override event Action OnDisappeared;
@@ -18,6 +19,7 @@ namespace CapsuleSurvival.Impl
         [SerializeField] private Animator _animator;
 
         private bool _isActive = false;
+        private bool _wasTouched = false;
 
         public override float Radius { get; protected set; }
 
@@ -43,7 +45,7 @@ namespace CapsuleSurvival.Impl
         {
             Destroy(_collider);
             _animatorListener.OnAnimationCompleted += OnDisappearingCompleted;
-            _animator.SetTrigger(DISAPPEAR_ANIMPARAM);
+            _animator.SetTrigger(_wasTouched ? EXPLODE_ANIMPARAM : DISAPPEAR_ANIMPARAM);
         }
 
         private void OnDisappearingCompleted()
@@ -72,6 +74,7 @@ namespace CapsuleSurvival.Impl
 
             IVulnerable vulnerableDamageDealer = fromParticipant as IVulnerable;
 
+            _wasTouched = true;
             OnBeingHitted?.Invoke(this);
             vulnerableDamageDealer?.TakeHit(this);
         }
@@ -85,6 +88,7 @@ namespace CapsuleSurvival.Impl
 
             if (vulnerable != null)
             {
+                _wasTouched = true;
                 OnBeingHitted?.Invoke(this);
                 vulnerable.TakeHit(this);
             }
