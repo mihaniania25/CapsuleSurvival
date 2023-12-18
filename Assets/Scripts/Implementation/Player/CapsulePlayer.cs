@@ -1,18 +1,24 @@
 ﻿using System;
 using UnityEngine;
 using CapsuleSurvival.Core;
-using CapsuleSurvival.Utility;
 
 namespace CapsuleSurvival.Impl
 {
     public class CapsulePlayer : PlayerBase
     {
+        private const string APPEAR_ANIMPARAM = "Appear";
+        private const string DISAPPEAR_ANIMPARAM = "Disappear";
+
         public override event Action OnAppeared;
         public override event Action OnDisappeared;
         public override event Action<IVulnerable> OnBeingHitted;
 
         [SerializeField] private CapsuleCollider _collider;
         [SerializeField] private PlayerMovementController _movementController;
+        [SerializeField] private ParticipantAnimatorListener _animatorListener;
+        [SerializeField] private Animator _animator;
+
+        private bool _isActive = false;
 
         public override float Radius { get; protected set; }
 
@@ -33,29 +39,49 @@ namespace CapsuleSurvival.Impl
         public override void Launch()
         {
             _movementController.IsMovementEnabled = true;
+            _isActive = true;
         }
 
         public override void Stop()
         {
             _movementController.IsMovementEnabled = false;
+            _isActive = false;
         }
 
         public override void TakeHit(GameParticipant fromParticipant)
         {
-            GameLog.Error("[CapsulePlayer] 'TakeHit' not implemented");
-            OnBeingHitted?.Invoke(this);
+            if (_isActive)
+                OnBeingHitted?.Invoke(this);
         }
 
         public override void Appear()
         {
-            GameLog.Error("[CapsulePlayer] 'Appear' not implemented");
+            _animatorListener.OnAnimationCompleted += OnAppearingCompleted;
+            _animator.SetTrigger(APPEAR_ANIMPARAM);
+        }
+
+        private void OnAppearingCompleted()
+        {
+            _animatorListener.OnAnimationCompleted -= OnAppearingCompleted;
             OnAppeared?.Invoke();
         }
 
         public override void Dissapear()
         {
-            GameLog.Error("[CapsulePlayer] 'Dissapear' not implemented");
+            _animatorListener.OnAnimationCompleted += OnDisappearingCompleted;
+            _animator.SetTrigger(DISAPPEAR_ANIMPARAM);
+        }
+
+        private void OnDisappearingCompleted()
+        {
+            _animatorListener.OnAnimationCompleted -= OnDisappearingCompleted;
             OnDisappeared?.Invoke();
+        }
+
+        private void OnDestroy()
+        {
+            _animatorListener.OnAnimationCompleted -= OnDisappearingCompleted;
+            _animatorListener.OnAnimationCompleted -= OnAppearingCompleted;
         }
     }
 }
