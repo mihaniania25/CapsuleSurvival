@@ -1,19 +1,22 @@
 using UnityEngine;
 using CapsuleSurvival.Core;
-using CapsuleSurvival.Utility;
 
 namespace CapsuleSurvival.Impl
 {
     public class GameEffectsController : MonoBehaviour, IGameEffectsController
     {
+        private const string EARTHQUAKE_ANIMPARAM = "Shaking";
+
+        [SerializeField] private Animator _cameraAnimator;
+
         public void EnableGameOverEffect()
         {
-            GameLog.Error("[GameEffectsController] 'EnableGameOverEffect' not implemented");
+            _cameraAnimator.SetBool(EARTHQUAKE_ANIMPARAM, true);
         }
 
         public void DisableGameOverEffect()
         {
-            GameLog.Error("[GameEffectsController] 'DisableGameOverEffect' not implemented");
+            _cameraAnimator.SetBool(EARTHQUAKE_ANIMPARAM, false);
         }
     }
 }
