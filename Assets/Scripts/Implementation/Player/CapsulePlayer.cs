@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using CapsuleSurvival.Core;
 using CapsuleSurvival.Utility;
 
@@ -10,10 +11,17 @@ namespace CapsuleSurvival.Impl
         public override event Action OnDisappeared;
         public override event Action<IVulnerable> OnBeingHitted;
 
-#warning TODO implement PlayerBase Radius
-        public override float Radius => 0.05f;
+        [SerializeField] private CapsuleCollider _collider;
+
+        public override float Radius { get; protected set; }
 
         private IUserInputReader _inputReader;
+
+        public override void Setup()
+        {
+            float horizontalScale = Mathf.Max(_collider.transform.lossyScale.x, _collider.transform.lossyScale.z);
+            Radius = _collider.radius * horizontalScale;
+        }
 
         public override void ConnectInputReader(IUserInputReader inputReader)
         {

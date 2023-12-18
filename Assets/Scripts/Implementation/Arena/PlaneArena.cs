@@ -5,6 +5,13 @@ namespace CapsuleSurvival.Impl
 {
     public class PlaneArena : MonoBehaviour, IArena
     {
+        private const int CORNER_VERTICE_INDEX_1 = 0;
+        private const int CORNER_VERTICE_INDEX_2 = 10;
+        private const int CORNER_VERTICE_INDEX_3 = 110;
+        private const int CORNER_VERTICE_INDEX_4 = 120;
+
+        private const int MAX_SPACE_SEARCH_ATTEMPTS = 1000;
+
         [SerializeField] private Transform _playerSpawnPositionHolder;
         [SerializeField] private Transform _planeTransform;
         [SerializeField] private MeshFilter _planeMeshFilter;
@@ -27,26 +34,15 @@ namespace CapsuleSurvival.Impl
         {
             Mesh planeMesh = _planeMeshFilter.sharedMesh;
 
-            Vector3 corner1 = _planeTransform.TransformPoint(planeMesh.vertices[0]);
-            Vector3 corner2 = _planeTransform.TransformPoint(planeMesh.vertices[10]);
-            Vector3 corner3 = _planeTransform.TransformPoint(planeMesh.vertices[110]);
-            Vector3 corner4 = _planeTransform.TransformPoint(planeMesh.vertices[120]);
+            Vector3 corner1 = _planeTransform.TransformPoint(planeMesh.vertices[CORNER_VERTICE_INDEX_1]);
+            Vector3 corner2 = _planeTransform.TransformPoint(planeMesh.vertices[CORNER_VERTICE_INDEX_2]);
+            Vector3 corner3 = _planeTransform.TransformPoint(planeMesh.vertices[CORNER_VERTICE_INDEX_3]);
+            Vector3 corner4 = _planeTransform.TransformPoint(planeMesh.vertices[CORNER_VERTICE_INDEX_4]);
 
             _minX = Mathf.Min(corner1.x, corner2.x, corner3.x, corner4.x);
             _maxX = Mathf.Max(corner1.x, corner2.x, corner3.x, corner4.x);
             _minZ = Mathf.Min(corner1.z, corner2.z, corner3.z, corner4.z);
             _maxZ = Mathf.Max(corner1.z, corner2.z, corner3.z, corner4.z);
-
-
-            //_planeMesh.vertices
-
-            //Vector3 planePosition = _planeTransform.position;
-            //Vector3 planeHalfScale = _planeTransform.lossyScale / 2.0f;
-
-            //_minX = planePosition.x - planeHalfScale.x;
-            //_maxX = planePosition.x + planeHalfScale.x;
-            //_minZ = planePosition.z - planeHalfScale.z;
-            //_maxZ = planePosition.z + planeHalfScale.z;
         }
 
         public Vector3 GetFreeRandomPosition(ISimpleVolumetric volumetric)
@@ -56,10 +52,13 @@ namespace CapsuleSurvival.Impl
             float minAllowableZ = _minZ + volumetric.Radius;
             float maxAllowableZ = _maxZ - volumetric.Radius;
 
+            int attempt = 0;
             Vector3 randomPosition;
 
             do
             {
+                attempt++;
+
                 randomPosition = new Vector3
                 (
                     Random.Range(minAllowableX, maxAllowableX),
@@ -67,7 +66,7 @@ namespace CapsuleSurvival.Impl
                     Random.Range(minAllowableZ, maxAllowableZ)
                 );
             }
-            while (HasVolumetricIntersections(volumetric, randomPosition));
+            while (attempt <= MAX_SPACE_SEARCH_ATTEMPTS && HasVolumetricIntersections(volumetric, randomPosition));
 
             return randomPosition;
         }

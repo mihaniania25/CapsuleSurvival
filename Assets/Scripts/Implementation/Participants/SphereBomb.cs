@@ -1,16 +1,24 @@
 ﻿using System;
 using CapsuleSurvival.Core;
 using CapsuleSurvival.Utility;
+using UnityEngine;
 
 namespace CapsuleSurvival.Impl
 {
     public class SphereBomb : GameParticipant
     {
-#warning TODO Radius in 'SphereBomb'
-        public override float Radius => 0.05f;
+        [SerializeField] private SphereCollider _collider;
+
+        public override float Radius { get; protected set; }
 
         public override event Action OnAppeared;
         public override event Action OnDisappeared;
+
+        public override void Setup()
+        {
+            float horizontalScale = Mathf.Max(_collider.transform.lossyScale.x, _collider.transform.lossyScale.z);
+            Radius = _collider.radius * horizontalScale;
+        }
 
         public override void Appear()
         {

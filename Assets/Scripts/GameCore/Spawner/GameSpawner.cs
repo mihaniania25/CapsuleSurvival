@@ -43,6 +43,7 @@ namespace CapsuleSurvival.Core
             OnPlayerAppearingCompleted?.Invoke();
 
             _player.OnAppeared -= OnPlayerAppeared;
+            _player.Setup();
             _player.Launch();
         }
 

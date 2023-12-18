@@ -1,6 +1,7 @@
 ﻿using System;
 using CapsuleSurvival.Core;
 using CapsuleSurvival.Utility;
+using UnityEngine;
 
 namespace CapsuleSurvival.Impl
 {
@@ -9,8 +10,17 @@ namespace CapsuleSurvival.Impl
         public override event Action OnAppeared;
         public override event Action OnDisappeared;
 
-#warning TODO Radius in 'CubeEnemy'
-        public override float Radius => 0.05f;
+        [SerializeField] private BoxCollider _collider;
+
+        public override float Radius { get; protected set; }
+
+        public override void Setup()
+        {
+            float xDimSize = _collider.transform.lossyScale.x * _collider.size.x;
+            float zDimSize = _collider.transform.lossyScale.z * _collider.size.z;
+
+            Radius = Mathf.Sqrt(xDimSize * xDimSize + zDimSize * zDimSize) / 2.0f;
+        }
 
         public override void Appear()
         {

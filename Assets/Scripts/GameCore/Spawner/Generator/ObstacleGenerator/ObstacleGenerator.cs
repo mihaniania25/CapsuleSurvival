@@ -45,6 +45,7 @@ namespace CapsuleSurvival.Core
                 {
                     GameObject obstacleGO = GameObject.Instantiate(_genSettings.ParticipantPrefab.gameObject);
                     GameParticipant obstacleView = obstacleGO.GetComponent<GameParticipant>();
+                    obstacleView.Setup();
 
                     Vector3 position = _arena.GetFreeRandomPosition(obstacleView);
                     obstacleGO.transform.position = position;
