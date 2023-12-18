@@ -8,7 +8,7 @@ namespace CapsuleSurvival.Core
 {
     public class ParticipantsCleaner
     {
-        private const float DISAPPEAR_INVOKE_INTERVAL = 0.1f;
+        private const float DISAPPEAR_INVOKE_INTERVAL = 0.2f;
 
         public event Action OnCleaningCompleted;
 

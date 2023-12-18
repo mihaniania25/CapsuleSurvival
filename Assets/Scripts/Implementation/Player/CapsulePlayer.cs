@@ -18,8 +18,6 @@ namespace CapsuleSurvival.Impl
         [SerializeField] private ParticipantAnimatorListener _animatorListener;
         [SerializeField] private Animator _animator;
 
-        private bool _isActive = false;
-
         public override float Radius { get; protected set; }
 
         private IUserInputReader _inputReader;
@@ -39,18 +37,18 @@ namespace CapsuleSurvival.Impl
         public override void Launch()
         {
             _movementController.IsMovementEnabled = true;
-            _isActive = true;
+            IsAlive = true;
         }
 
         public override void Stop()
         {
             _movementController.IsMovementEnabled = false;
-            _isActive = false;
+            IsAlive = false;
         }
 
         public override void TakeHit(GameParticipant fromParticipant)
         {
-            if (_isActive)
+            if (IsAlive)
                 OnBeingHitted?.Invoke(this);
         }
 
