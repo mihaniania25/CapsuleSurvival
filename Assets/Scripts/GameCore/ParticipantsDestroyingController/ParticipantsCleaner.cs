@@ -21,6 +21,12 @@ namespace CapsuleSurvival.Core
 
         public void CleanUp()
         {
+            if (_participantsRegister.AllParticipants.Count == 0)
+            {
+                OnCleaningCompleted?.Invoke();
+                return;
+            }
+
             List<GameParticipant> participantsToClear = new List<GameParticipant>(_participantsRegister.AllParticipants);
             foreach (GameParticipant participant in participantsToClear)
             {

@@ -68,6 +68,7 @@ namespace CapsuleSurvival.Impl
 
         public override void Dissapear()
         {
+            Destroy(_collider);
             _animatorListener.OnAnimationCompleted += OnDisappearingCompleted;
             _animator.SetTrigger(DISAPPEAR_ANIMPARAM);
         }
