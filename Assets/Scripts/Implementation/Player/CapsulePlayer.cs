@@ -11,7 +11,7 @@ namespace CapsuleSurvival.Impl
         public override event Action<IVulnerable> OnBeingHitted;
 
 #warning TODO implement PlayerBase Radius
-        public override float Radius => 0f;
+        public override float Radius => 0.05f;
 
         private IUserInputReader _inputReader;
 

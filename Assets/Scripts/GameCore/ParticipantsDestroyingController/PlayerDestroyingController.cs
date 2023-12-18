@@ -65,10 +65,10 @@ namespace CapsuleSurvival.Core
         {
             Stop();
 
-            _gameContext = null;
-
             if (_player != null)
                 _player.OnDisappeared -= OnPlayerDisappeared;
+
+            _gameContext = null;
         }
     }
 }

@@ -6,7 +6,6 @@ namespace CapsuleSurvival.Core
     {
         public event Action OnPlayerPreDestroy;
         public event Action OnPlayerDestroyed;
-        public event Action OnCleaningCompleted;
 
         private PlayerDestroyingController _playerDestroyingController = new PlayerDestroyingController();
         private VulnerablesDestroyingController _vulnerablesDestroyingController = new VulnerablesDestroyingController();

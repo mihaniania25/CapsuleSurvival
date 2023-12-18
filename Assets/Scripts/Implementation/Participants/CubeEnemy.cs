@@ -10,7 +10,7 @@ namespace CapsuleSurvival.Impl
         public override event Action OnDisappeared;
 
 #warning TODO Radius in 'CubeEnemy'
-        public override float Radius => 0f;
+        public override float Radius => 0.05f;
 
         public override void Appear()
         {

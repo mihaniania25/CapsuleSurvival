@@ -75,6 +75,8 @@ namespace CapsuleSurvival.Core
                 disapearingHelper.Dispose();
             }
             _disappearingParticipants.Clear();
+
+            _gameContext = null;
         }
     }
 }

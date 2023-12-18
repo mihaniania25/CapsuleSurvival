@@ -12,8 +12,8 @@ namespace CapsuleSurvival.Core
         [Min(0f)]
         public float StartDelay;
 
-        [Min(0.000001f)]
-        public float GenInterval;
+        [Min(0.001f)]
+        public float GenInterval = 1f;
 
         [Min(1)]
         public int MaxGeneratedSimultaneously = 9999;

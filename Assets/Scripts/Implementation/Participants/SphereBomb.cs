@@ -7,7 +7,7 @@ namespace CapsuleSurvival.Impl
     public class SphereBomb : GameParticipant
     {
 #warning TODO Radius in 'SphereBomb'
-        public override float Radius => throw new NotImplementedException();
+        public override float Radius => 0.05f;
 
         public override event Action OnAppeared;
         public override event Action OnDisappeared;
