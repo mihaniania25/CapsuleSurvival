@@ -8,10 +8,10 @@ namespace CapsuleSurvival.Impl
     {
         public KeyCode KeyCode;
 
-        [Range(0f, 1f)]
-        public float HorizontalValue;
+        [Range(-1f, 1f)]
+        public float HorizontalValue = 0f;
 
-        [Range(0f, 1f)]
-        public float VerticalValue;
+        [Range(-1f, 1f)]
+        public float VerticalValue = 0f;
     }
 }

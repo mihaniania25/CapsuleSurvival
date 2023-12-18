@@ -11,11 +11,13 @@ namespace CapsuleSurvival.Impl
 
         [SerializeField] private PlaneArena _arena;
         [SerializeField] private InputReaderGetter _inputReaderGetter;
-        [SerializeField] private GameSettings _settings;
+        [SerializeField] private GameEffectsController _effectsController;
 
         [SerializeField] private Curtain _sceneCurtain;
         [SerializeField] private GameObject _startPanel;
         [SerializeField] private GameOverListener _gameOverListener;
+
+        [SerializeField] private GameSettings _settings;
 
         private void Awake()
         {
@@ -29,10 +31,13 @@ namespace CapsuleSurvival.Impl
 
         private void SetupGame()
         {
+            _arena.Setup();
             _gameContext.RegisterArena(_arena);
 
             IUserInputReader inputsReader = _inputReaderGetter.GetUserInputReader();
             _gameContext.RegisterUserInputReader(inputsReader);
+
+            _gameContext.RegisterEffectsController(_effectsController);
 
             _gameManager.Setup(new GameManagerParams
             {

@@ -16,7 +16,7 @@ namespace CapsuleSurvival.Core
         public void MakeParticipantDisappear()
         {
             _participant.OnDisappeared += OnParticipantDisappeared;
-            _participant.Appear();
+            _participant.Dissapear();
         }
 
         private void OnParticipantDisappeared()

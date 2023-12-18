@@ -8,9 +8,10 @@ namespace CapsuleSurvival.Core
         public abstract event Action OnAppeared;
         public abstract event Action OnDisappeared;
 
-        public abstract float Radius { get; }
+        public abstract float Radius { get; protected set; }
         public virtual Vector3 Position => transform.position;
 
+        public abstract void Setup();
         public abstract void Launch();
         public abstract void Stop();
 

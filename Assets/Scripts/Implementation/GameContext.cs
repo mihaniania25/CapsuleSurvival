@@ -39,7 +39,7 @@ namespace CapsuleSurvival.Impl
 
         public void RegisterPlayer(PlayerBase player)
         {
-            if (Player == null)
+            if (Player.Value == null)
                 Player.Value = player;
             else
                 GameLog.Error("[GameContext] trying to register PLAYER multiple times!");

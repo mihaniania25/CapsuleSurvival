@@ -21,7 +21,8 @@ namespace CapsuleSurvival.Core
 
         public void CleanUp()
         {
-            foreach (GameParticipant participant in _participantsRegister.AllParticipants)
+            List<GameParticipant> participantsToClear = new List<GameParticipant>(_participantsRegister.AllParticipants);
+            foreach (GameParticipant participant in participantsToClear)
             {
                 _participantsRegister.UnregisterParticipant(participant);
 
@@ -30,8 +31,11 @@ namespace CapsuleSurvival.Core
                 _disappearingParticipants[participant] = dissapearingHelper;
 
                 dissapearingHelper.OnDisappearingCompleted += OnDissappearingCompleted;
-                dissapearingHelper.MakeParticipantDisappear();
             }
+
+            List<ParticipantDisapearingHelper> disapearingHelpers = new List<ParticipantDisapearingHelper>(_disappearingParticipants.Values);
+            foreach (ParticipantDisapearingHelper disapearingHelper in disapearingHelpers)
+                disapearingHelper.MakeParticipantDisappear();
         }
 
         private void OnDissappearingCompleted(GameParticipant participant)
@@ -42,7 +46,7 @@ namespace CapsuleSurvival.Core
 
             _disappearingParticipants.Remove(participant);
 
-            GameObject.Destroy(participant);
+            GameObject.Destroy(participant.gameObject);
 
             if (_disappearingParticipants.Count == 0)
                 OnCleaningCompleted?.Invoke();

@@ -25,7 +25,14 @@ namespace CapsuleSurvival.Core
         public void Launch()
         {
             Stop();
-            _generationTask = new CoroutineTask(GenerationCoroutine());
+
+            if (IsGenerationSettingsValid())
+                _generationTask = new CoroutineTask(GenerationCoroutine());
+        }
+
+        private bool IsGenerationSettingsValid()
+        {
+            return _genSettings.ParticipantPrefab != null;
         }
 
         private IEnumerator GenerationCoroutine()
@@ -38,6 +45,7 @@ namespace CapsuleSurvival.Core
                 {
                     GameObject obstacleGO = GameObject.Instantiate(_genSettings.ParticipantPrefab.gameObject);
                     GameParticipant obstacleView = obstacleGO.GetComponent<GameParticipant>();
+                    obstacleView.Setup();
 
                     Vector3 position = _arena.GetFreeRandomPosition(obstacleView);
                     obstacleGO.transform.position = position;
@@ -45,6 +53,8 @@ namespace CapsuleSurvival.Core
                     _participantsRegister.RegisterParticipant(this, obstacleView);
                     MakeObstacleAppear(obstacleView);
                 }
+
+                yield return new WaitForSeconds(_genSettings.GenInterval);
             }
         }
 

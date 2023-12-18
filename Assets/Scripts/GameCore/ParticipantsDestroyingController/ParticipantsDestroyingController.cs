@@ -6,7 +6,6 @@ namespace CapsuleSurvival.Core
     {
         public event Action OnPlayerPreDestroy;
         public event Action OnPlayerDestroyed;
-        public event Action OnCleaningCompleted;
 
         private PlayerDestroyingController _playerDestroyingController = new PlayerDestroyingController();
         private VulnerablesDestroyingController _vulnerablesDestroyingController = new VulnerablesDestroyingController();
@@ -16,8 +15,18 @@ namespace CapsuleSurvival.Core
             _playerDestroyingController.Setup(gameContext);
             _vulnerablesDestroyingController.Setup(gameContext);
 
-            _playerDestroyingController.OnPlayerPreDestroy += OnPlayerPreDestroy;
-            _playerDestroyingController.OnPlayerDestroyed += OnPlayerDestroyed;
+            _playerDestroyingController.OnPlayerPreDestroy += OnPlayerDestroyingStarted;
+            _playerDestroyingController.OnPlayerDestroyed += OnPlayerDestroyingCompleted;
+        }
+
+        private void OnPlayerDestroyingStarted()
+        {
+            OnPlayerPreDestroy?.Invoke();
+        }
+
+        private void OnPlayerDestroyingCompleted()
+        {
+            OnPlayerDestroyed?.Invoke();
         }
 
         public void Launch()
@@ -34,8 +43,8 @@ namespace CapsuleSurvival.Core
 
         public void Dispose()
         {
-            _playerDestroyingController.OnPlayerPreDestroy -= OnPlayerPreDestroy;
-            _playerDestroyingController.OnPlayerDestroyed -= OnPlayerDestroyed;
+            _playerDestroyingController.OnPlayerPreDestroy -= OnPlayerDestroyingStarted;
+            _playerDestroyingController.OnPlayerDestroyed -= OnPlayerDestroyingCompleted;
 
             _playerDestroyingController.Dispose();
             _vulnerablesDestroyingController.Dispose();
