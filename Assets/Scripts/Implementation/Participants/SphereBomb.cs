@@ -5,14 +5,17 @@ using UnityEngine;
 
 namespace CapsuleSurvival.Impl
 {
-    public class SphereBomb : GameParticipant
+    public class SphereBomb : GameParticipant, IVulnerable
     {
-        [SerializeField] private SphereCollider _collider;
-
-        public override float Radius { get; protected set; }
-
         public override event Action OnAppeared;
         public override event Action OnDisappeared;
+        public event Action<IVulnerable> OnBeingHitted;
+
+        [SerializeField] private SphereCollider _collider;
+
+        private bool _isActive = false;
+
+        public override float Radius { get; protected set; }
 
         public override void Setup()
         {
@@ -34,12 +37,34 @@ namespace CapsuleSurvival.Impl
 
         public override void Launch()
         {
-            GameLog.Error("[SphereBomb] 'Launch' not implemented");
+            _isActive = true;
         }
 
         public override void Stop()
         {
-            GameLog.Error("[SphereBomb] 'Stop' not implemented");
+            _isActive = false;
+        }
+
+        public void TakeHit(GameParticipant fromParticipant)
+        {
+            IVulnerable vulnerableDamageDealer = fromParticipant as IVulnerable;
+
+            OnBeingHitted(this);
+            vulnerableDamageDealer?.TakeHit(this);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (_isActive == false)
+                return;
+
+            IVulnerable vulnerable = collision.gameObject.GetComponent(typeof(IVulnerable)) as IVulnerable;
+
+            if (vulnerable != null)
+            {
+                OnBeingHitted?.Invoke(this);
+                vulnerable.TakeHit(this);
+            }
         }
     }
 }

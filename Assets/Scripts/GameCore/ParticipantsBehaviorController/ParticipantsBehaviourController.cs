@@ -21,7 +21,7 @@ namespace CapsuleSurvival.Core
 
             _participantsDestroyingController.OnPlayerPreDestroy += OnPlayerPreDestroy;
             _participantsDestroyingController.OnPlayerDestroyed += OnPlayerDestroyingCompleted;
-            _participantsCleaner.OnCleaningCompleted += OnParticipantsCleaned;
+            _participantsCleaner.OnCleaningCompleted += OnParticipantsCleaningCompleted;
         }
 
         private void OnPlayerPreDestroy()
@@ -33,6 +33,11 @@ namespace CapsuleSurvival.Core
         private void OnPlayerDestroyingCompleted()
         {
             _participantsCleaner.CleanUp();
+        }
+
+        private void OnParticipantsCleaningCompleted()
+        {
+            OnParticipantsCleaned?.Invoke();
         }
 
         public void Launch()
@@ -49,7 +54,7 @@ namespace CapsuleSurvival.Core
         {
             _participantsDestroyingController.OnPlayerPreDestroy -= OnPlayerPreDestroy;
             _participantsDestroyingController.OnPlayerDestroyed -= OnPlayerDestroyingCompleted;
-            _participantsCleaner.OnCleaningCompleted -= OnParticipantsCleaned;
+            _participantsCleaner.OnCleaningCompleted -= OnParticipantsCleaningCompleted;
 
             _participantsDestroyingController.Dispose();
             _participantsCleaner.Dispose();

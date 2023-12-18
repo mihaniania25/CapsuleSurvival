@@ -53,7 +53,7 @@ namespace CapsuleSurvival.Core
 
             _disappearingParticipants.Remove(participant);
 
-            GameObject.Destroy(participant);
+            GameObject.Destroy(participant.gameObject);
         }
 
         public void Stop()

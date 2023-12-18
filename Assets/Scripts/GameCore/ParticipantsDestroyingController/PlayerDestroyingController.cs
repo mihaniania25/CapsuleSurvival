@@ -47,8 +47,8 @@ namespace CapsuleSurvival.Core
         {
             _player.OnDisappeared -= OnPlayerDisappeared;
 
-            _gameContext.UnregisterPlayer();
             GameObject.Destroy(_player.gameObject);
+            _gameContext.UnregisterPlayer();
 
             OnPlayerDestroyed?.Invoke();
         }

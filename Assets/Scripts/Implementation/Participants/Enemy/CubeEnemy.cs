@@ -5,14 +5,17 @@ using UnityEngine;
 
 namespace CapsuleSurvival.Impl
 {
-    public class CubeEnemy : GameParticipant
+    public class CubeEnemy : GameParticipant, IVulnerable
     {
         public override event Action OnAppeared;
         public override event Action OnDisappeared;
+        public event Action<IVulnerable> OnBeingHitted;
 
         [SerializeField] private BoxCollider _collider;
         [SerializeField] private EnemyMovementController _movementController;
         [SerializeField] private EnemyRotationController _rotationController;
+
+        private bool _isActive = false;
 
         public override float Radius { get; protected set; }
 
@@ -40,12 +43,31 @@ namespace CapsuleSurvival.Impl
         {
             _movementController.Launch();
             _rotationController.Launch();
+            _isActive = true;
         }
 
         public override void Stop()
         {
             _movementController.Stop();
             _rotationController.Stop();
+            _isActive = false;
+        }
+
+        public void TakeHit(GameParticipant fromParticipant)
+        {
+            OnBeingHitted?.Invoke(this);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (_isActive == false)
+                return;
+
+            if (collision.gameObject.GetComponent<CubeEnemy>() != null)
+                return;
+
+            IVulnerable vulnerable = collision.gameObject.GetComponent(typeof(IVulnerable)) as IVulnerable;
+            vulnerable?.TakeHit(this);
         }
     }
 }

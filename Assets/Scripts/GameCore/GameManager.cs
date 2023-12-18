@@ -14,7 +14,12 @@ namespace CapsuleSurvival.Core
             _gameContext = gameManagerParams.GameContext;
 
             _flowController.Setup(gameManagerParams);
-            _flowController.OnGameOver += OnGameOver;
+            _flowController.OnGameOver += FlowControllerOnGameOver;
+        }
+
+        private void FlowControllerOnGameOver()
+        {
+            OnGameOver?.Invoke();
         }
 
         public void Launch()
@@ -25,6 +30,8 @@ namespace CapsuleSurvival.Core
 
         public void Dispose()
         {
+            _flowController.OnGameOver -= FlowControllerOnGameOver;
+
             _flowController.Dispose();
             _flowController = null;
 

@@ -20,11 +20,14 @@ namespace CapsuleSurvival.Impl
             if (_isActivated)
             {
                 Vector3 shift = _lastHandledPosition - transform.position;
-                Quaternion targetRotation = Quaternion.LookRotation(shift, Vector3.up);
+                if (shift.magnitude > 0)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(shift, Vector3.up);
 
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
 
-                _lastHandledPosition = transform.position;
+                    _lastHandledPosition = transform.position;
+                }
             }
         }
 
