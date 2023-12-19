@@ -1,12 +1,14 @@
 ﻿using System;
-using CapsuleSurvival.Core;
-using CapsuleSurvival.Utility;
 using UnityEngine;
+using CapsuleSurvival.Core;
 
 namespace CapsuleSurvival.Impl
 {
     public class CubeEnemy : GameParticipant, IVulnerable
     {
+        private const string APPEAR_ANIMPARAM = "Appear";
+        private const string DISAPPEAR_ANIMPARAM = "Disappear";
+
         public override event Action OnAppeared;
         public override event Action OnDisappeared;
         public event Action<IVulnerable> OnBeingHitted;
@@ -14,6 +16,9 @@ namespace CapsuleSurvival.Impl
         [SerializeField] private BoxCollider _collider;
         [SerializeField] private EnemyMovementController _movementController;
         [SerializeField] private EnemyRotationController _rotationController;
+
+        [SerializeField] private ParticipantAnimatorListener _animatorListener;
+        [SerializeField] private Animator _animator;
 
         private bool _isActive = false;
 
@@ -29,13 +34,26 @@ namespace CapsuleSurvival.Impl
 
         public override void Appear()
         {
-            GameLog.Error("[CubeEnemy] 'Appear' not implemented");
+            _animatorListener.OnAnimationCompleted += OnAppearingCompleted;
+            _animator.SetTrigger(APPEAR_ANIMPARAM);
+        }
+
+        private void OnAppearingCompleted()
+        {
+            _animatorListener.OnAnimationCompleted -= OnAppearingCompleted;
             OnAppeared?.Invoke();
         }
 
         public override void Dissapear()
         {
-            GameLog.Error("[CubeEnemy] 'Dissapear' not implemented");
+            Destroy(_collider);
+            _animatorListener.OnAnimationCompleted += OnDisappearingCompleted;
+            _animator.SetTrigger(DISAPPEAR_ANIMPARAM);
+        }
+
+        private void OnDisappearingCompleted()
+        {
+            _animatorListener.OnAnimationCompleted -= OnDisappearingCompleted;
             OnDisappeared?.Invoke();
         }
 
@@ -55,7 +73,8 @@ namespace CapsuleSurvival.Impl
 
         public void TakeHit(GameParticipant fromParticipant)
         {
-            OnBeingHitted?.Invoke(this);
+            if (_isActive)
+                OnBeingHitted?.Invoke(this);
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -68,6 +87,12 @@ namespace CapsuleSurvival.Impl
 
             IVulnerable vulnerable = collision.gameObject.GetComponent(typeof(IVulnerable)) as IVulnerable;
             vulnerable?.TakeHit(this);
+        }
+
+        private void OnDestroy()
+        {
+            _animatorListener.OnAnimationCompleted -= OnAppearingCompleted;
+            _animatorListener.OnAnimationCompleted -= OnDisappearingCompleted;
         }
     }
 }

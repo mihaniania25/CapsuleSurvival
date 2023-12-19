@@ -25,7 +25,7 @@ namespace CapsuleSurvival.Impl
         {
             _rigidbody.velocity = Vector3.zero;
 
-            if (_isMovementEnabled && _player != null)
+            if (_isMovementEnabled && _player != null && _player.IsAlive)
             {
                 Vector3 direction = (_player.transform.position - transform.position).normalized;
                 transform.position += direction * _baseSpeed * Time.deltaTime;

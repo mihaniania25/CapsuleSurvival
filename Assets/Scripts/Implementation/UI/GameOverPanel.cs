@@ -26,7 +26,7 @@ namespace CapsuleSurvival.Impl
 
         private void OnEnable()
         {
-            _elapsedTimeLabel.text = string.Format("{0:0.00}", _gameSessionModel.PlayingTimeElapsed.Value);
+            _elapsedTimeLabel.text = string.Format("{0:0.00} sec", _gameSessionModel.PlayingTimeElapsed.Value);
         }
 
         private void OnStartButtonClick()
