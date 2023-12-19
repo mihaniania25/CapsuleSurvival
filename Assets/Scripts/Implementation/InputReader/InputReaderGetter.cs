@@ -1,22 +1,24 @@
 ﻿using UnityEngine;
 using CapsuleSurvival.Core;
-using CapsuleSurvival.Utility;
 
 namespace CapsuleSurvival.Impl
 {
     public class InputReaderGetter : MonoBehaviour
     {
         [SerializeField] private PCInputReader _pcInputReader;
-        
+        [SerializeField] private TouchesInputReader _touchesInputReader;
+
         public IUserInputReader GetUserInputReader()
         {
             _pcInputReader.gameObject.SetActive(false);
-
-            GameLog.Error("[InputReaderGetter] TODO touch input reader");
+            _touchesInputReader.gameObject.SetActive(false);
 
 #if UNITY_EDITOR || UNITY_STANDALONE
             _pcInputReader.gameObject.SetActive(true);
             return _pcInputReader;
+#else
+            _touchesInputReader.gameObject.SetActive(true);
+            return _touchesInputReader;
 #endif
         }
     }

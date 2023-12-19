@@ -19,8 +19,13 @@ namespace CapsuleSurvival.Impl
 
         [SerializeField] private GameSettings _settings;
 
+        [Min(30)]
+        [SerializeField] private int _targetFrameRate = 120;
+
         private void Awake()
         {
+            Application.targetFrameRate = _targetFrameRate;
+
             SetupGame();
 
             _gameOverListener.Setup();
