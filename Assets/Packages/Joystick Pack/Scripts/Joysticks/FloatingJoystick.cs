@@ -18,9 +18,14 @@ public class FloatingJoystick : Joystick
         base.OnPointerDown(eventData);
     }
 
-    public override void OnPointerUp(PointerEventData eventData)
+    protected override void Release()
     {
         background.gameObject.SetActive(false);
-        base.OnPointerUp(eventData);
+        base.Release();
+    }
+
+    private void OnDisable()
+    {
+        Release();
     }
 }
